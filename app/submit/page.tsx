@@ -173,7 +173,6 @@ export default function HealthCardRenewal() {
           setIswait(true)
           setOtp("")
           setTimeout(() => {
-            alert("رمز التحقق خاطىْ")
             ///otpArd.push(otp);
             setIswait(false)
           }, 4000)
