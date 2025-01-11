@@ -9,16 +9,12 @@ import { Hero } from '@/components/hero';
 import { Bookmark } from '@/components/bookmark';
 import { SupportSection } from '@/components/support';
 import Link from 'next/link';
-import { LiveChatWidget } from '@livechat/widget-react'
 
 export default function HomePage() {
 
   return (
 
     <div dir="rtl" className="min-h-screen bg-gray-50">
-       <LiveChatWidget
-      license="18979514"
-    />   
       <Hero />
       {/* Main Content */}
       <div className="mx-auto max-w-7xl  sm:px-6 lg:px-8 -mt-10 relative">

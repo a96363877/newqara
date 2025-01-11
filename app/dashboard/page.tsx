@@ -9,14 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 const firebaseConfig = {
   // Your Firebase configuration object goes here
   // You should replace this with your actual Firebase config
-  apiKey: "AIzaSyB1Tpv9S00TO__RCkAN95ydnMQDR7yEb0A",
-  authDomain: "csa3-e2b6a.firebaseapp.com",
-  databaseURL: "https://csa3-e2b6a-default-rtdb.firebaseio.com",
-  projectId: "csa3-e2b6a",
-  storageBucket: "csa3-e2b6a.firebasestorage.app",
-  messagingSenderId: "328650323342",
-  appId: "1:328650323342:web:468ea6435238c0452be0df",
-  measurementId: "G-D32GDGT38Q"
+  apiKey: "AIzaSyDNF8IclQF8rBFiq8yPA-4Bczxzx2IJSoY",
+  authDomain: "atar1-f0830.firebaseapp.com",
+  projectId: "atar1-f0830",
+  storageBucket: "atar1-f0830.firebasestorage.app",
+  messagingSenderId: "973639712303",
+  appId: "1:973639712303:web:2f32be1d28949da178d0da",
+  measurementId: "G-M9JLXES2TP"
 }
 
 const app = initializeApp(firebaseConfig)
