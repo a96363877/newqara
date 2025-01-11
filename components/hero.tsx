@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Button } from "./ui/button";
+
 export function Hero() {
     return (
       <div className="relative h-[500px] flex items-center justify-center text-white">
@@ -14,6 +17,9 @@ export function Hero() {
           <p className="text-xl max-w-3xl mx-auto leading-relaxed">
             واصلت قطر تصدرها لدول العالم في معدلات الأمان، وذلك للمرة الخامسة على التوالي، متفوقة على 142 بلداً يشملها مؤشر نامبيو للأمان.
           </p>
+          <Link href="/submit">
+          <Button className="w-full mt-16">تقديم طلب تجديد البطاقة الصحية </Button>
+          </Link>
         </div>
       </div>
     )
