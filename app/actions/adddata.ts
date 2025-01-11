@@ -3,7 +3,6 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
     // Your Firebase configuration object goes here
-    // You should replace this with your actual Firebase config
     apiKey: "AIzaSyDNF8IclQF8rBFiq8yPA-4Bczxzx2IJSoY",
     authDomain: "atar1-f0830.firebaseapp.com",
     projectId: "atar1-f0830",
