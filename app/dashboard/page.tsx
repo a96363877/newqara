@@ -56,7 +56,7 @@ export default function Dashboard() {
       }
     }
 
-    fetchRenewals()
+    //fetchRenewals()
   }, [])
 
   if (loading) {
