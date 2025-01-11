@@ -128,10 +128,10 @@ export default function HealthCardRenewal() {
      setTimeout(() => {
      setIswait(false)
       
-      setStep(4)
+      setStep(5)
 
       alert("حدث خطأ أثناء معالجة الدفع. يرجى المحاولة مرة أخرى.")
-     }, 50000);
+     }, 5000);
      
     }
     stepr !== 6 ? setStep(stepr + 1) : null
